@@ -1,0 +1,1 @@
+python3 -m pip install -U pygame==2.6.0
