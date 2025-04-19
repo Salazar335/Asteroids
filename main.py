@@ -8,13 +8,16 @@ from asteroidfield import *
 
 def main():
     pygame.init()
+
+    # groups #
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroid_group = pygame.sprite.Group()
-
+    shot_group = pygame.sprite.Group()
     Asteroid.containers = (asteroid_group, updatable, drawable)
     Player.containers = (updatable, drawable)
     AsteroidField.containers = (updatable,)
+    Shot.containers = (shot_group, updatable, drawable)
     
     asteroid_field = AsteroidField()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
