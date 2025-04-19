@@ -5,6 +5,9 @@ class Player(CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
+        self.shoot_timer = 0
+        
+        
 
   # in the player class
     def triangle(self):
@@ -35,23 +38,32 @@ class Player(CircleShape):
             self.move(dt)
         if keys[pygame.K_SPACE]:
             self.shoot()
+        if self.shoot_timer > 0:
+            self.shoot_timer -= dt
+            if self.shoot_timer < 0:
+                self.shoot_timer = 0
 
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * dt
 
     def shoot(self):
-        # Create a vector pointing "up" (in pygame, negative y is up)
-        direction = pygame.Vector2(0, 1)
-        
-        # Rotate the vector according to the player's angle
-        # Assuming self.angle stores the player's current rotation
-        direction = direction.rotate(self.rotation)
-        
-        # Scale it to the bullet speed
-        direction = direction * PLAYER_SHOOT_SPEED
-        
-        # Create a new Shot at the player's position with the calculated velocity
-        new_shot = Shot(self.position.x, self.position.y)
-        new_shot.velocity = direction
+        if self.shoot_timer == 0:
+            # Create a vector pointing "up" (in pygame, negative y is up)
+            direction = pygame.Vector2(0, 1)
+            
+            # Rotate the vector according to the player's angle
+            # Assuming self.angle stores the player's current rotation
+            direction = direction.rotate(self.rotation)
+            
+            # Scale it to the bullet speed
+            direction = direction * PLAYER_SHOOT_SPEED
+            
+            # Create a new Shot at the player's position with the calculated velocity
+            new_shot = Shot(self.position.x, self.position.y)
+            new_shot.velocity = direction
+
+             # Reset the shoot cooldown timer
+            self.shoot_timer = PLAYER_SHOOT_COOLDOWN
+
         
